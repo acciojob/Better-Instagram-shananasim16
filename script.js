@@ -1,30 +1,17 @@
-//your code here
-const images = document.querySelectorAll('.image');
+function allowDrop(ev) {
+    ev.preventDefault();
+}
 
-let selectedImage = null;
+function drag(ev) {
+    ev.dataTransfer.setData("src", ev.target.id);
+}
 
-images.forEach((image) => {
-  image.addEventListener('dragstart', () => {
-    selectedImage = image;
-    image.classList.add('selected');
-  });
+function drop(ev) {
+    ev.preventDefault();
+    var src = document.getElementById(ev.dataTransfer.getData("src"));
+    var srcParent = src.parentNode;
+    var tgt = ev.currentTarget.firstElementChild;
 
-  image.addEventListener('dragend', () => {
-    selectedImage = null;
-    image.classList.remove('selected');
-  });
-
-  image.addEventListener('dragover', (e) => {
-    e.preventDefault();
-  });
-
-  image.addEventListener('drop', () => {
-    if (selectedImage !== image) {
-      const selectedImageUrl = selectedImage.style.backgroundImage;
-      const imageUrl = image.style.backgroundImage;
-
-      selectedImage.style.backgroundImage = imageUrl;
-      image.style.backgroundImage = selectedImageUrl;
-    }
-  });
-});
+    ev.currentTarget.replaceChild(src, tgt);
+    srcParent.appendChild(tgt);
+}
